@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, FormLabel, Typography } from '@mui/material'
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -11,9 +11,28 @@ import Stack from '@mui/material/Stack';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN } from '../constants/strapi';
+import axios from 'axios';
 
-const ProductFilterSidebar = () => {
+const ProductFilterSidebar = ({setCat}) => {
     const [showPassword, setShowPassword] = useState(false);  
+    const [category, setCategory] = useState([])
+    const [err, setErr] = useState(null);
+
+    const getCategories = async() => {
+        try {
+            let result = await axios.get(`${STRAPI_API_URL}/categories?populate=*`, {
+                    headers: {
+                        'Authorization': `Bearer ${ACCESS_TOKEN}`
+                    }
+                    })
+                    setCategory(result.data.data)
+        } catch (error) {
+            setErr(error.message);
+    } }
+useEffect(()=>{
+    getCategories()
+},[])
 
   return (
         <Box  sx={{
@@ -50,10 +69,9 @@ const ProductFilterSidebar = () => {
         <Box>
         <FormGroup>
             <FormLabel component="legend">Products Category</FormLabel>
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Men's" />
-            <FormControlLabel control={<Checkbox />} label="Women's" />
-            <FormControlLabel control={<Checkbox />} label="Electronics" />
-            <FormControlLabel control={<Checkbox />} label="Jewellary" />
+            {category.map(p => (
+            <FormControlLabel control={<Checkbox  />} onClick={() => setCat(p.attributes.name)} label={p.attributes.name} key={p.id} />
+            ))}
          </FormGroup>
          <Button type="submit" variant="contained" fullWidth sx={{color:'#fff', my:2, bgcolor:'#001e3c'}}>Filter</Button>
         </Box>

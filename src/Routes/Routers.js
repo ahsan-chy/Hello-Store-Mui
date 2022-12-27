@@ -5,6 +5,8 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import ProductList from "../pages/ProductList";
 
 const Routers = () => {
   
@@ -15,11 +17,14 @@ const Routers = () => {
           <Route path="/" element={<Home/>}/>
           <Route path="/store" element={<Store />}/>
           <Route path="/sale" element={<Sale />}/>
-          <Route path="/signup" element={<SignUp />}/>
-          <Route path="/signin" element={<SignIn />}/>
+          <Route path="/register" element={<SignUp />}/>
+          <Route path="/login" element={<SignIn />}/>
           <Route path="/profile" element={<Profile />}/>
+          <Route path="/productlist" element={<ProductList />}/>
+          
           <Route path="*" element={<p>There's nothing here: 404!</p>} />
       </Routes>
+      <ToastContainer />
     </div>
   )
 }

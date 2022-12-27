@@ -10,6 +10,8 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
@@ -36,13 +38,33 @@ const newUser = (e) => {
         })
         .then(response => {
             console.log("User Registered Successfully");
-            navigate("/signin")
+            navigate("/login")
+            toast.success('SignUp Successfully', {
+                position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
             console.log('User profile', response.data.user);
-            // console.log('User token', response.data.jwt);
+            console.log('User token', response.data.jwt);
         })
         }
         catch(error) {
             console.log('An error occurred:', error.message);
+            toast.error('SignUp Failed', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
           }
 }}
 
@@ -93,13 +115,15 @@ const newUser = (e) => {
                         <Button type="submit" variant="contained" fullWidth sx={{color:'#fff', my:2, bgcolor:'#001e3c'}}>Submit</Button>
                         </form>
                         <Typography>
-                            Already have Account <Link to="/signin">Sign In</Link>
+                            Already have Account <Link to="/login">Sign In</Link>
                         </Typography>
                     </Item>
                 </Grid>
             </Grid>
             </Box>
         </Container>
+        
+       
     </div>
   )
 }

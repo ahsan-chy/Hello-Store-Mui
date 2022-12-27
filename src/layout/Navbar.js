@@ -13,7 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../plugins/Firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../redux/actions/userAction';
 import { useState } from 'react';
@@ -55,9 +54,9 @@ function Navbar() {
   };
 const handleLogout = () => {
   // console.log(logout())
-  logout()
+  localStorage.removeItem('jwt')
   dispatch(signOut())
-  navigate("/signin")
+  navigate("/login")
 }
   return (
     <AppBar position="static" style={{backgroundColor:"#001E3C"}}>
@@ -160,7 +159,7 @@ const handleLogout = () => {
           </Box>
           {!user ? 
             <MenuItem>
-            <Link to="/signup">
+            <Link to="/register">
             <Typography sx={{textDecoration:'none', color:"#FFF !important"}}>Sign Up/ Sign In</Typography>
             </Link>
           </MenuItem>

@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signin } from '../redux/actions/userAction'
 import axios from 'axios';
+import { toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
@@ -17,6 +19,8 @@ const SignIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
+
+    const notify = () => toast("Wow so easy!");
 
 const loginUser = async(e) => {
     e.preventDefault()
@@ -34,16 +38,37 @@ const loginUser = async(e) => {
                 localStorage.setItem('jwt', jwt)
                 // localStorage.setItem('userData', JSON.stringify(user))
                 // console.log(user)
+                // alert("Login Successfully")
                 console.log("Login Successfully")
                 if (user || jwt) {
                     const token = jwt
-                        dispatch(signin(user.username, user.email, user.confirmed ,token))
-                        navigate("/profile")
+                    dispatch(signin(user.username, user.email, user.confirmed ,token))
+                    toast.success('SignIn Successfully', {
+                        position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "dark",
+                        });
+                    navigate("/profile")
           }
             })
         }
         catch (error){
             console.log(error.message)
+            toast.error('Login Failed', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
         }
 } }
 
@@ -72,9 +97,9 @@ return (
                             onChange={e => setPassword(e.target.value)}
                             fullWidth label="Password" placeholder='Enter Your Password'  margin="normal"/>
                         
-                        <Button type="submit" variant="contained" fullWidth sx={{color:'#fff',my:3, bgcolor:'#001e3c'}}>Submit</Button>
+                        <Button type="submit"  variant="contained" fullWidth sx={{color:'#fff',my:3, bgcolor:'#001e3c'}}>Submit</Button>
                         <Typography>
-                            Don't have account <Link to="/signup">Sign Up</Link>
+                            Don't have account <Link to="/register">Sign Up</Link>
                         </Typography>
                         </form>
                     </Item>
