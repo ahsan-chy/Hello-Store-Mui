@@ -3,11 +3,14 @@ import ProductCards from '../components/ProductCards'
 import ProductFilterSidebar from '../components/ProductFilterSidebar'
 import { Box, Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { useEffect } from 'react';
 
 const Store = () => {
   let [cat, setCat] = useState("")
   
+useEffect(()=>{
   console.log(cat)
+},[cat])
   
   
   return (

@@ -7,7 +7,7 @@ import { Box, Button, CardActionArea, CardActions, Grid } from '@mui/material';
 import {products} from "../db/data"
 import { useEffect } from 'react';
 import axios from 'axios';
-import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN } from '../constants/strapi';
+import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN, STRAPI_PRODUCTS_API_URL } from '../constants/strapi';
 
 
 const ProductCards = ({cat}) => {
@@ -31,7 +31,7 @@ const ProductCards = ({cat}) => {
 
     const getProducts = async() => {
         try {
-            let result = await axios.get(`${STRAPI_API_URL}/products?filters[category][name][$eq]=${cat}&populate=*`, {
+            let result = await axios.get(`${STRAPI_PRODUCTS_API_URL}?filters[category][name][$eq]=${cat}&populate=*`, {
                     headers: {
                         'Authorization': `Bearer ${ACCESS_TOKEN}`
                     }

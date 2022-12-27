@@ -14,7 +14,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN } from '../constants/strapi';
 import axios from 'axios';
 
-const ProductFilterSidebar = ({setCat}) => {
+const ProductFilterSidebar = ({cat, setCat}) => {
     const [showPassword, setShowPassword] = useState(false);  
     const [category, setCategory] = useState([])
     const [err, setErr] = useState(null);
@@ -30,6 +30,19 @@ const ProductFilterSidebar = ({setCat}) => {
         } catch (error) {
             setErr(error.message);
     } }
+    const handleCheck =(e)=>{
+     if(e.target.checked){
+      let value = [...cat, e.target.value]
+      setCat(value)
+     }
+     else{
+        let values = e.target.value
+        cat = cat.filter(item => item !== values)
+        setCat(cat)
+        // console.log("Unchecked")
+     }
+    }
+    console.log("Category at filter",cat)
 useEffect(()=>{
     getCategories()
 },[])
@@ -70,7 +83,7 @@ useEffect(()=>{
         <FormGroup>
             <FormLabel component="legend">Products Category</FormLabel>
             {category.map(p => (
-            <FormControlLabel control={<Checkbox  />} onClick={() => setCat(p.attributes.name)} label={p.attributes.name} key={p.id} />
+            <FormControlLabel control={<Checkbox  />} onChange={handleCheck} value={p.attributes.name} label={p.attributes.name} key={p.id} />
             ))}
          </FormGroup>
          <Button type="submit" variant="contained" fullWidth sx={{color:'#fff', my:2, bgcolor:'#001e3c'}}>Filter</Button>
