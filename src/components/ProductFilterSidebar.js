@@ -42,7 +42,7 @@ const ProductFilterSidebar = ({cat, setCat}) => {
         // console.log("Unchecked")
      }
     }
-    console.log("Category at filter",cat)
+    // console.log("Category at filter",cat)
 useEffect(()=>{
     getCategories()
 },[])

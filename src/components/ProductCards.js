@@ -29,21 +29,21 @@ const ProductCards = ({cat}) => {
     } }
     getAllProducts()
 
-    const getProducts = async() => {
+    const getProducts = async(cat, cat1, cat2, cat3) => {
         try {
-            let result = await axios.get(`${STRAPI_PRODUCTS_API_URL}?filters[category][name][$eq]=${cat}&populate=*`, {
+            let result = await axios.get(`${STRAPI_PRODUCTS_API_URL}?filters[category][name][$eq]=${cat}&filters[category][name][$eq]=${cat1}&filters[category][name][$eq]=${cat2}&filters[category][name][$eq]=${cat3}&populate=*`, {
                     headers: {
                         'Authorization': `Bearer ${ACCESS_TOKEN}`
                     }
                     })
                     setProducts(result.data.data)
-                    console.log(cat)
+                    // console.log(cat)
         } catch (error) {
             setErr(error.message);
     } }
 useEffect(()=>{
-    getProducts()
-    console.log(products)
+    getProducts(cat[0],cat[1],cat[2],cat[3])
+    // console.log(products)
 },[cat])
   return (
     <Box>
