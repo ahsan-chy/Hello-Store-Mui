@@ -8,7 +8,8 @@ import {products} from "../db/data"
 import { useEffect } from 'react';
 import axios from 'axios';
 import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN, STRAPI_PRODUCTS_API_URL } from '../constants/strapi';
-
+import { Link } from 'react-router-dom';
+import "../assets/css/cardbtn.css"
 
 const ProductCards = ({cat}) => {
     const [products, setProducts] = useState([])
@@ -79,10 +80,8 @@ useEffect(()=>{
                       </Typography>
                       </CardContent>
                   </CardActionArea>
-                  <CardActions sx={{justifyContent:'center',}}>
-                  <Button variant="contained" >
-                      Buy Now
-                  </Button>
+                  <CardActions sx={{justifyContent:'center', mt:2}}>
+                  <Link className="buy-btn" to ={`/store/${p.id}`}>View Product</Link>
                   </CardActions>
                   </Card>
               </Grid>
@@ -113,11 +112,9 @@ useEffect(()=>{
                     </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions sx={{justifyContent:'center',}}>
-                <Button variant="contained" >
-                    Buy Now
-                </Button>
-                </CardActions>
+                <CardActions sx={{justifyContent:'center', mt:2}}>
+                  <Link className="buy-btn" to ={`/store/${p.id}`}>View Product</Link>
+                  </CardActions>
                 </Card>
             </Grid>
       ))

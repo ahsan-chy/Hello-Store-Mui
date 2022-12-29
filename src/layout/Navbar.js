@@ -16,6 +16,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../redux/actions/userAction';
 import { useState } from 'react';
+import { Badge } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import cartQuantity from '../redux/reducers/productReducer';
+import { incrCart } from '../redux/actions/productActions';
 
 const pages = [{
   title: "Home",
@@ -26,8 +30,8 @@ const pages = [{
   path: "/store",
 },
 {
-  title: "Sale",
-  path: "/sale",
+  title: "Cart",
+  path: "/cart",
 }];
 
 function Navbar() {
@@ -36,7 +40,7 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  let { user } = useSelector((state) => ({ ...state }));
+  let { user, cart } = useSelector((state) => ({ ...state }));
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -58,6 +62,7 @@ const handleLogout = () => {
   dispatch(signOut())
   navigate("/login")
 }
+
   return (
     <AppBar position="static" style={{backgroundColor:"#001E3C"}}>
       <Container maxWidth="xl">
@@ -158,14 +163,40 @@ const handleLogout = () => {
             ))}
           </Box>
           {!user ? 
+          <Box sx={{display:'flex'}}>
+            {!cart ?
+              <Box>
+              <IconButton size="large" aria-label="show cart products quantity" color="inherit">
+                <Badge badgeContent={0} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Box>
+            :
+            <Box>
+              <IconButton size="large" aria-label="show cart products quantity" color="inherit">
+                <Badge badgeContent={cart.quantity} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Box>
+            }
             <MenuItem>
             <Link to="/register">
-            <Typography sx={{textDecoration:'none', color:"#FFF !important"}}>Sign Up/ Sign In</Typography>
+            <Typography sx={{textDecoration:'none', color:"#FFF !important"}}>Sign Up</Typography>
             </Link>
           </MenuItem>
+          </Box>
             :
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+          <Box sx={{ flexGrow: 0, display:'flex' }}>
+            <Box sx={{mx:2}}>
+              <IconButton size="large" aria-label="show cart products quantity" color="inherit">
+                <Badge badgeContent={4} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Box>
+            <Tooltip title="Open Profile DropDown">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" />
               </IconButton>
