@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import StarIcon from '@mui/icons-material/Star';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { decCart, incCart } from '../redux/actions/productActions';
+import { addToCart, decCart, incCart } from '../redux/actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -24,10 +24,15 @@ const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0)
   ];
 const Cart = () => {
+    let [cartData, setCartData] = useState([])
     const dispatch = useDispatch();
-    const {id} = useParams();
 
-    let { cart } = useSelector((state) => ({ ...state }));
+    let {cart}  = useSelector((state) => ({ ...state }));
+    // console.log("cart", cart)
+
+    cartData = Object.keys(cart).map(key => cart[key])
+    // console.log(prodCart); 
+
 
 const ColorButton = styled(Button)(({ theme }) => ({
     color: '#001e3c',
@@ -37,12 +42,16 @@ const ColorButton = styled(Button)(({ theme }) => ({
         color:'#001e3c'
     },
     }));
-      
-    const incCount = () =>{
-        dispatch(incCart())
+      console.log(cartData[0].quantity)
+    const incCount = (c) =>{
+         c = c + 1;
+         console.log("Quantity Increased",c)
+        // dispatch(addToCart(c.quantity))
       }
-      const decCount = () =>{
-        dispatch(decCart())
+      const decCount = (c) =>{
+        // dispatch(decCart(c))
+        // c = c - 1
+        
       }
   return (
     <Grid sx={{ my:5, mx:5}}>
@@ -68,24 +77,24 @@ const ColorButton = styled(Button)(({ theme }) => ({
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map((row) => (
+                    {cartData && cartData.map((c, i) => (
                         <TableRow
-                        key={row.name}
+                        key={i}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                         <TableCell>
                             <div style={{ width:'65px', height:'100%' }}>
-                                <img src={'http://localhost:1337/uploads/New_Project_4_ab768e97dc.png'} alt="product image"
+                                <img src={c.productImage} alt="product image"
                                 style={{width:'100%', height:'100%' }} />
                             </div>
                         </TableCell>
-                        <TableCell component="th" scope="row">{row.name}</TableCell>
-                        <TableCell>{row.fat}</TableCell>
-                        <TableCell>{row.carbs}</TableCell>
+                        <TableCell component="th" scope="row">{c.productTitle}</TableCell>
+                        <TableCell>{c.productPrice} $</TableCell>
+                        <TableCell>{c.categoryName}</TableCell>
                         <TableCell align="right">
                             <Typography  sx={{fontSize:'18px'}}>
-                                <RemoveCircleOutlineOutlinedIcon onClick={decCount} sx={{fontSize:'22px', cursor:'pointer'}}/> {cart} &nbsp;
-                                <AddCircleOutlineIcon onClick={incCount} sx={{fontSize:'22px', cursor:'pointer'}}/>
+                                <RemoveCircleOutlineOutlinedIcon onClick={ () => decCount(c.productId)} sx={{fontSize:'22px', cursor:'pointer'}}/> {c.quantity} &nbsp;
+                                <AddCircleOutlineIcon onClick={() => incCount(c.quantity)} sx={{fontSize:'22px', cursor:'pointer'}}/>
                             </Typography>
                             </TableCell>
                         </TableRow>

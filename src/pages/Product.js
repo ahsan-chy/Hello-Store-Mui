@@ -28,7 +28,8 @@ const Product = () => {
     const dispatch = useDispatch();
     const {id} = useParams();
 
-    // let { cart } = useSelector((state) => ({ ...state }));
+    let { cart, quantity } = useSelector((state) => ({ ...state }));
+    console.log("cart", cart)
 
     const getSingleProducts = async() => {
         try {
@@ -43,8 +44,9 @@ const Product = () => {
             setErr(error.message);
     } }
 
-const addProductToCart = (productId, productPrice, categoryId, quantity ) =>{
-    dispatch(addToCart(productId, productPrice, categoryId, quantity))
+const addProductToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ) =>{
+    dispatch(addToCart(productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ))
+    dispatch(incCart(quantity))
     }
     
 useEffect(()=>{
@@ -86,7 +88,7 @@ useEffect(()=>{
         >Buy Now</ColorButton>
         <ColorButton variant="outlined" sx={{ml:2, backgroundColor:'#FFF', color:"#001e3c"}} 
         className="cart-btn"
-        onClick={() => addProductToCart(singleProduct.data[0].id, singleProduct.data[0].attributes.price, singleProduct.data[0].attributes.category.data.id, 1)}
+        onClick={() => addProductToCart(singleProduct.data[0].id, singleProduct.data[0].attributes.title, singleProduct.data[0].attributes.description, STRAPI_MEDIA_URL+singleProduct.data[0].attributes.image.data[0].attributes.url, singleProduct.data[0].attributes.price, singleProduct.data[0].attributes.category.data.id, singleProduct.data[0].attributes.category.data.attributes.name, 1)}
         >Add to Cart</ColorButton>
         </Grid>
         

@@ -40,7 +40,7 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  let { user, cart } = useSelector((state) => ({ ...state }));
+  let { user, cart, quantity } = useSelector((state) => ({ ...state }));
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -175,7 +175,7 @@ const handleLogout = () => {
             :
             <Box>
               <IconButton size="large" aria-label="show cart products quantity" color="inherit">
-                <Badge badgeContent={cart.quantity} color="error">
+                <Badge badgeContent={cart.length} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
