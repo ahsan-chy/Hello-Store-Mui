@@ -13,16 +13,23 @@ export const addToCart = (productId, productTitle, productDescription, productIm
         }
     }
 }
-export const incCart= (item) => {
+
+
+export const updateQuantity= (id, quantity) => {
     return{
-        type: "INCREMENT_NUMBER",
-        payload: item
+        type: "UPDATE_QUANTITY",
+        payload: {
+            id: id, 
+            quantity: quantity
+        }
     }
 }
 
-export const decCart= (item) => {
+export const removeFromCart= (id) => {
     return{
-        type: "DECREMENT_NUMBER",
-        payload: item
+        type: "REMOVE_TO_CART",
+        payload: {
+            id: id
+        }
     }
 }

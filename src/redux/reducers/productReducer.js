@@ -3,18 +3,37 @@ const initialState = [];
 export const addToCart = (state = initialState, action) => {
     switch (action.type){
         case "ADD_TO_CART":
-            return [...state, action.payload]
-        default: 
-            return state;
-    }   
-}
+            const { productId } = action.payload;
+            const dupe = state.find(obj => obj.productId === productId);
+            return dupe ? state : [...state, action.payload ];
 
-export const cartQuantity = (state = 0, action) => {
-    switch (action.type){
-        case "INCREMENT_NUMBER":
-            return state + 1;
-        case "DECREMENT_NUMBER":
-            return state - 1;
+
+        case "UPDATE_QUANTITY":
+            {
+               const {id, quantity} = action.payload;
+                 const productIndex = state.findIndex(product => product.productId === id)
+                 if (productIndex !== -1) {
+                    const updatedCartProducts = [...state]
+                    updatedCartProducts[productIndex] = {
+                      ...updatedCartProducts[productIndex],
+                      quantity: quantity
+                    }
+                    return updatedCartProducts
+                  } else {
+                    // If the product was not found, return the original state
+                    return state
+                  }
+                // action.payload.quantity
+            }
+
+        case "REMOVE_TO_CART":
+            {
+                const {id} = action.payload;
+                const productIndex = state.findIndex(product => product.productId === id);
+                // console.log(productIndex)
+                return state.filter((_, i) => i !== productIndex);
+
+            }
         default: 
             return state;
     }   

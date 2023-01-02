@@ -44,13 +44,15 @@ const Product = () => {
             setErr(error.message);
     } }
 
-const addProductToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ) =>{
-    dispatch(addToCart(productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ))
-    dispatch(incCart(quantity))
-    }
+// const addProductToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ) =>{
+//     dispatch(addToCart(productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ))
+//     // dispatch(incCart(quantity))
+//     }
     
+    const goToTop = () => window.scrollTo(0,0)
 useEffect(()=>{
     getSingleProducts()
+    goToTop()
     // console.log(singleProduct.data[0].attributes.title)
 },[])
 
@@ -88,7 +90,7 @@ useEffect(()=>{
         >Buy Now</ColorButton>
         <ColorButton variant="outlined" sx={{ml:2, backgroundColor:'#FFF', color:"#001e3c"}} 
         className="cart-btn"
-        onClick={() => addProductToCart(singleProduct.data[0].id, singleProduct.data[0].attributes.title, singleProduct.data[0].attributes.description, STRAPI_MEDIA_URL+singleProduct.data[0].attributes.image.data[0].attributes.url, singleProduct.data[0].attributes.price, singleProduct.data[0].attributes.category.data.id, singleProduct.data[0].attributes.category.data.attributes.name, 1)}
+        onClick={() => dispatch(addToCart(singleProduct.data[0].id, singleProduct.data[0].attributes.title, singleProduct.data[0].attributes.description, STRAPI_MEDIA_URL+singleProduct.data[0].attributes.image.data[0].attributes.url, singleProduct.data[0].attributes.price, singleProduct.data[0].attributes.category.data.id, singleProduct.data[0].attributes.category.data.attributes.name, 1))}
         >Add to Cart</ColorButton>
         </Grid>
         

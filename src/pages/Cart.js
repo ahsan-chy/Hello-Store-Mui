@@ -9,12 +9,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import StarIcon from '@mui/icons-material/Star';
+import ClearIcon from '@mui/icons-material/Clear';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { addToCart, decCart, incCart } from '../redux/actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { removeFromCart, updateQuantity } from '../redux/actions/productActions';
 
 
 function createData(name, calories, fat, carbs, protein) {
@@ -25,6 +25,7 @@ const rows = [
   ];
 const Cart = () => {
     let [cartData, setCartData] = useState([])
+    let [updatedCartData, setUpdatedCartData] = useState([])
     const dispatch = useDispatch();
 
     let {cart}  = useSelector((state) => ({ ...state }));
@@ -42,17 +43,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
         color:'#001e3c'
     },
     }));
-      console.log(cartData[0].quantity)
-    const incCount = (c) =>{
-         c = c + 1;
-         console.log("Quantity Increased",c)
-        // dispatch(addToCart(c.quantity))
-      }
-      const decCount = (c) =>{
-        // dispatch(decCart(c))
-        // c = c - 1
-        
-      }
+    //   console.log(cartData[0].quantity)
+    
   return (
     <Grid sx={{ my:5, mx:5}}>
         <Grid container>
@@ -74,10 +66,11 @@ const ColorButton = styled(Button)(({ theme }) => ({
                         <TableCell sx={{fontWeight:600}}>Product Price</TableCell>
                         <TableCell sx={{fontWeight:600}}>Product Category</TableCell>
                         <TableCell sx={{fontWeight:600}} align="right">Quantity</TableCell>
+                        <TableCell sx={{fontWeight:600}}> </TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {cartData && cartData.map((c, i) => (
+                    {!cartData ? console.log("Wait") : cartData.map((c, i) => (
                         <TableRow
                         key={i}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -93,10 +86,11 @@ const ColorButton = styled(Button)(({ theme }) => ({
                         <TableCell>{c.categoryName}</TableCell>
                         <TableCell align="right">
                             <Typography  sx={{fontSize:'18px'}}>
-                                <RemoveCircleOutlineOutlinedIcon onClick={ () => decCount(c.productId)} sx={{fontSize:'22px', cursor:'pointer'}}/> {c.quantity} &nbsp;
-                                <AddCircleOutlineIcon onClick={() => incCount(c.quantity)} sx={{fontSize:'22px', cursor:'pointer'}}/>
+                                <RemoveCircleOutlineOutlinedIcon onClick={() => dispatch(updateQuantity(c.productId, c.quantity-1))} sx={{fontSize:'22px', cursor:'pointer'}}/>{c.quantity}&nbsp;
+                                <AddCircleOutlineIcon            onClick={() => dispatch(updateQuantity(c.productId, c.quantity+1))} sx={{fontSize:'22px', cursor:'pointer'}}/>
                             </Typography>
                             </TableCell>
+                            <TableCell><ClearIcon sx={{cursor:'pointer'}} onClick= {()=> dispatch(removeFromCart(c.productId))}/></TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
