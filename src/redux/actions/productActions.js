@@ -1,4 +1,4 @@
-export const addToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ) => {
+export const addToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity, subTotal ) => {
     return{
         type: "ADD_TO_CART",
         payload: {
@@ -10,11 +10,10 @@ export const addToCart = (productId, productTitle, productDescription, productIm
             categoryId: categoryId, 
             categoryName: categoryName,
             quantity: quantity, 
+            subTotal: subTotal
         }
     }
 }
-
-
 export const updateQuantity= (id, quantity) => {
     return{
         type: "UPDATE_QUANTITY",
@@ -31,5 +30,12 @@ export const removeFromCart= (id) => {
         payload: {
             id: id
         }
+    }
+}
+
+export const totalAmount= (total) => {
+    return{
+        type: "TOTAL",
+        payload: total
     }
 }

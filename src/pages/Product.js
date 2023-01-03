@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ACCESS_TOKEN, STRAPI_MEDIA_URL, STRAPI_PRODUCTS_API_URL } from '../constants/strapi';
 import { Grid, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import StarIcon from '@mui/icons-material/Star';
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { addToCart, decCart, incCart } from '../redux/actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
-// import "../assets/css/product.css"
+import "../assets/css/product.css"
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color:'#fff',
@@ -44,20 +42,22 @@ const Product = () => {
             setErr(error.message);
     } }
 
-// const addProductToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ) =>{
-//     dispatch(addToCart(productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity ))
-//     // dispatch(incCart(quantity))
-//     }
-    
+const addProductToCart = (productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity, subTotal ) =>{
+    try{
+        dispatch(addToCart(productId, productTitle, productDescription, productImage, productPrice, categoryId, categoryName, quantity, subTotal ))
+        // alert("Already Added")
+    }
+    catch(e){
+        alert("Error")
+    }    
+    }
+
+
     const goToTop = () => window.scrollTo(0,0)
 useEffect(()=>{
     getSingleProducts()
     goToTop()
-    // console.log(singleProduct.data[0].attributes.title)
 },[])
-
-{/* <h3>{singleProduct.data[0].attributes.title}</h3> */}
-{/* <h2>{console.log(singleProduct && singleProduct.data[0].attributes.title )}</h2> */}
   return (
     <Container sx={{ my:5}}>
         {
@@ -79,18 +79,14 @@ useEffect(()=>{
         <Typography gutterBottom variant="h5" sx={{mt:3, mb:1}} > {singleProduct.data[0].attributes.price} $ </Typography>
         </Grid>
         <Typography gutterBottom variant="subtitle1" >{singleProduct.data[0].attributes.description}</Typography>
-        {/* <Grid sx={{mt:3}}>
-            <Typography  sx={{fontSize:'25px'}}>
-                <RemoveCircleOutlineOutlinedIcon onClick={decCount} sx={{fontSize:'29px', cursor:'pointer'}}/> {cart}
-                <AddCircleOutlineIcon onClick={incCount} sx={{fontSize:'29px', cursor:'pointer'}}/>
-            </Typography>
-        </Grid> */}
         <Grid  sx={{mt:3}}>
-        <ColorButton variant="contained"
-        >Buy Now</ColorButton>
+          <span>
+            <Link variant="contained" className='buy-now' >Buy Now</Link>
+          </span>
+
         <ColorButton variant="outlined" sx={{ml:2, backgroundColor:'#FFF', color:"#001e3c"}} 
         className="cart-btn"
-        onClick={() => dispatch(addToCart(singleProduct.data[0].id, singleProduct.data[0].attributes.title, singleProduct.data[0].attributes.description, STRAPI_MEDIA_URL+singleProduct.data[0].attributes.image.data[0].attributes.url, singleProduct.data[0].attributes.price, singleProduct.data[0].attributes.category.data.id, singleProduct.data[0].attributes.category.data.attributes.name, 1))}
+        onClick={() => addProductToCart(singleProduct.data[0].id, singleProduct.data[0].attributes.title, singleProduct.data[0].attributes.description, STRAPI_MEDIA_URL+singleProduct.data[0].attributes.image.data[0].attributes.url, singleProduct.data[0].attributes.price, singleProduct.data[0].attributes.category.data.id, singleProduct.data[0].attributes.category.data.attributes.name, 1, singleProduct.data[0].attributes.price*1)}
         >Add to Cart</ColorButton>
         </Grid>
         

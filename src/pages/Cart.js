@@ -9,31 +9,26 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { removeFromCart, updateQuantity } from '../redux/actions/productActions';
+import { removeFromCart, subTotal, totalAmount, updateQuantity } from '../redux/actions/productActions';
 
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0)
-  ];
+
 const Cart = () => {
     let [cartData, setCartData] = useState([])
-    let [updatedCartData, setUpdatedCartData] = useState([])
     const dispatch = useDispatch();
 
-    let {cart}  = useSelector((state) => ({ ...state }));
+    let {cart, totalAmountR}  = useSelector((state) => ({ ...state }));
     // console.log("cart", cart)
 
     cartData = Object.keys(cart).map(key => cart[key])
-    // console.log(prodCart); 
-
 
 const ColorButton = styled(Button)(({ theme }) => ({
     color: '#001e3c',
@@ -43,12 +38,18 @@ const ColorButton = styled(Button)(({ theme }) => ({
         color:'#001e3c'
     },
     }));
-    //   console.log(cartData[0].quantity)
+// console.log(totalAmount)
+useEffect(()=>{
+    let result = cart.map(item => item.subTotal).reduce((prev, next) => prev + next);
     
-  return (
-    <Grid sx={{ my:5, mx:5}}>
-        <Grid container>
-            <Grid item lg={8} md={6} sm={12} xs={12}>
+    // console.log(result)
+    dispatch(totalAmount(result.toFixed(2)))
+},[cart])
+
+return (
+    <Grid sx={{ my:5}}>
+        <Container>
+            <Grid item lg={12} md={6} sm={12} xs={12}>
             <Box  sx={{
             borderRadius: 1,
             p: 2,
@@ -65,7 +66,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
                         <TableCell sx={{fontWeight:600}}>Product Name</TableCell>
                         <TableCell sx={{fontWeight:600}}>Product Price</TableCell>
                         <TableCell sx={{fontWeight:600}}>Product Category</TableCell>
-                        <TableCell sx={{fontWeight:600}} align="right">Quantity</TableCell>
+                        <TableCell sx={{fontWeight:600}}>Quantity</TableCell>
+                        <TableCell sx={{fontWeight:600}}>Sub Total </TableCell>
                         <TableCell sx={{fontWeight:600}}> </TableCell>
                     </TableRow>
                     </TableHead>
@@ -84,33 +86,33 @@ const ColorButton = styled(Button)(({ theme }) => ({
                         <TableCell component="th" scope="row">{c.productTitle}</TableCell>
                         <TableCell>{c.productPrice} $</TableCell>
                         <TableCell>{c.categoryName}</TableCell>
-                        <TableCell align="right">
+                        <TableCell>
                             <Typography  sx={{fontSize:'18px'}}>
                                 <RemoveCircleOutlineOutlinedIcon onClick={() => dispatch(updateQuantity(c.productId, c.quantity-1))} sx={{fontSize:'22px', cursor:'pointer'}}/>{c.quantity}&nbsp;
                                 <AddCircleOutlineIcon            onClick={() => dispatch(updateQuantity(c.productId, c.quantity+1))} sx={{fontSize:'22px', cursor:'pointer'}}/>
                             </Typography>
-                            </TableCell>
-                            <TableCell><ClearIcon sx={{cursor:'pointer'}} onClick= {()=> dispatch(removeFromCart(c.productId))}/></TableCell>
+                        </TableCell>
+
+                        <TableCell> {c.subTotal = c.productPrice*c.quantity}  $</TableCell>
+                        
+                        <TableCell><DeleteIcon sx={{cursor:'pointer'}} onClick= {()=> dispatch(removeFromCart(c.productId))}/></TableCell>
                         </TableRow>
+                        
                     ))}
+                    {/* {() => calculateTotal(subTotal)} */}
+                     <TableRow align="right">
+                        <TableCell rowSpan={4} />
+                        <TableCell colSpan={1}>Subtotal</TableCell>
+                        <TableCell><b>Total</b> {totalAmountR} $</TableCell>
+                    </TableRow>
+
                     </TableBody>
                 </Table>
                 </TableContainer>     
                 </Box>
             </Grid>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
-            <Box  sx={{
-            borderRadius: 1,
-            p: 2,
-            minWidth: 300,
-            boxShadow: 2,
-            mx:1
-            }}
-            >
-                    
-                </Box>
-            </Grid>
-        </Grid>
+            
+        </Container>
     </Grid>
   )
 }

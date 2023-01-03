@@ -32,9 +32,23 @@ export const addToCart = (state = initialState, action) => {
                 const productIndex = state.findIndex(product => product.productId === id);
                 // console.log(productIndex)
                 return state.filter((_, i) => i !== productIndex);
-
             }
+            
         default: 
             return state;
     }   
 }
+
+export const totalAmount = (state = 0, action) => {
+    switch (action.type){
+        case "TOTAL":
+                {
+                    const total  = action.payload;
+                    console.log(total);
+                    return  total 
+                 }
+        default:
+            return state
+}
+}
+
