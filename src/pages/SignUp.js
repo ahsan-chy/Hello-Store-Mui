@@ -47,10 +47,23 @@ const newUser = (e) => {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                    theme: "dark",
+                    theme: "light",
                 });
             console.log('User profile', response.data.user);
             console.log('User token', response.data.jwt);
+        })
+        .catch(error => {
+            console.log("Error is Error",error.message)
+            toast.error('SignUP Failed', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
         })
         }
         catch(error) {

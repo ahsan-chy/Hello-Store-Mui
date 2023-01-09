@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, FormLabel, Typography } from '@mui/material'
+import { FormLabel, Typography } from '@mui/material'
+import Button from './Button';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -11,13 +12,23 @@ import Stack from '@mui/material/Stack';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Slider from '@mui/material/Slider';
 import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN } from '../constants/strapi';
 import axios from 'axios';
 
-const ProductFilterSidebar = ({cat, setCat}) => {
-    const [showPassword, setShowPassword] = useState(false);  
+function valuetext(value) {
+    return `${value} $ `;
+  }
+
+const ProductFilterSidebar = ({cat, setCat, search, setSearch}) => {
     const [category, setCategory] = useState([])
     const [err, setErr] = useState(null);
+    const [value, setValue] = useState([0, 1000]);
+
+
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
 
     const getCategories = async() => {
         try {
@@ -66,10 +77,11 @@ useEffect(()=>{
             <OutlinedInput
                 id="search"
                 type='search'
+                value={search}
                 endAdornment={
                 <InputAdornment position="end">
                     <IconButton
-                    onClick={console.log("Search")}
+                    onChange={(e) => setSearch(e.target.value)}
                     edge="end"
                     > <Search />
                     </IconButton>
@@ -82,11 +94,25 @@ useEffect(()=>{
         <Box>
         <FormGroup>
             <FormLabel component="legend">Products Category</FormLabel>
-            {category.map(p => (
+            {category.map(p => (            
             <FormControlLabel control={<Checkbox  />} onChange={handleCheck} value={p.attributes.name} label={p.attributes.name} key={p.id} />
             ))}
          </FormGroup>
-         <Button type="submit" variant="contained" fullWidth sx={{color:'#fff', my:2, bgcolor:'#001e3c'}}>Filter</Button>
+                <Slider
+                getAriaLabel={() => 'Price Range'}
+                value={value}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                />
+                <Button 
+                type="submit"
+                 variant="contained" 
+                 sx={{color:'#fff', my:2, bgcolor:'#001e3c', width:'100%'}}
+
+                 label={"Filter"}
+                  />
+         {/* <Button type="submit" variant="contained" fullWidth sx={{color:'#fff', my:2, bgcolor:'#001e3c'}}>Filter</Button> */}
         </Box>
         
         </Stack>

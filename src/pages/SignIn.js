@@ -20,8 +20,6 @@ const SignIn = () => {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
 
-    const notify = () => toast("Wow so easy!");
-
 const loginUser = async(e) => {
     e.preventDefault()
     if( !email || !password)
@@ -45,20 +43,32 @@ const loginUser = async(e) => {
                     dispatch(signin(user.username, user.email, user.confirmed ,token))
                     toast.success('SignIn Successfully', {
                         position: "top-right",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "dark",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
                         });
                     navigate("/profile")
-          }
+            }})
+            .catch(error => {
+                console.log("Error is Error",error.message)
+                toast.error('Login Failed', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
             })
         }
         catch (error){
-            console.log(error.message)
+            console.log("Error is Error",error.message)
             toast.error('Login Failed', {
                 position: "top-right",
                 autoClose: 3000,

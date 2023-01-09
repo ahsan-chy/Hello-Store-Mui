@@ -7,17 +7,13 @@ export const addToCart = (state = initialState, action) => {
             const dupe = state.find(obj => obj.productId === productId);
             return dupe ? state : [...state, action.payload ];
 
-
         case "UPDATE_QUANTITY":
             {
                const {id, quantity} = action.payload;
                  const productIndex = state.findIndex(product => product.productId === id)
                  if (productIndex !== -1) {
                     const updatedCartProducts = [...state]
-                    updatedCartProducts[productIndex] = {
-                      ...updatedCartProducts[productIndex],
-                      quantity: quantity
-                    }
+                    updatedCartProducts[productIndex]={...updatedCartProducts[productIndex], quantity:quantity  }
                     return updatedCartProducts
                   } else {
                     // If the product was not found, return the original state

@@ -1,18 +1,20 @@
-.add-cart{
+.proceed-btn{
     text-decoration: none;
     color:#fff;
-    background-color: #001e3c !important;
+    background-color: #001e3c;
     padding: 5px 12px;
     font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.75;
+    font-size: 0.775rem;
+    line-height: 1.25;
     letter-spacing: 0.02857em;
     text-transform: uppercase;
     padding: 9px 25px;
     border-radius: 4px;
-    border: 1px solid #001e3c
+    border: 1px solid #001e3c;
+    text-align: center;
 }
-.add-cart:hover{
+
+.proceed-btn:hover{
     background-color:#fff !important;
     color: #001e3c
 }

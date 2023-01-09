@@ -18,8 +18,8 @@ import { signOut } from '../redux/actions/userAction';
 import { useState } from 'react';
 import { Badge } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import cartQuantity from '../redux/reducers/productReducer';
-import { incrCart } from '../redux/actions/productActions';
+import "../assets/css/navbar.css"
+import { toast } from 'react-toastify';
 
 const pages = [{
   title: "Home",
@@ -28,10 +28,6 @@ const pages = [{
 {
   title: "Store",
   path: "/store",
-},
-{
-  title: "Cart",
-  path: "/cart",
 }];
 
 function Navbar() {
@@ -40,7 +36,7 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  let { user, cart, quantity } = useSelector((state) => ({ ...state }));
+  let { user, cart } = useSelector((state) => ({ ...state }));
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -61,6 +57,16 @@ const handleLogout = () => {
   localStorage.removeItem('jwt')
   dispatch(signOut())
   navigate("/login")
+  toast.success('Logout Successfully', {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
 }
 
   return (
@@ -166,19 +172,23 @@ const handleLogout = () => {
           <Box sx={{display:'flex'}}>
             {!cart ?
               <Box>
+                <Link to="/cart"   className="cart-icon-btn">
               <IconButton size="large" aria-label="show cart products quantity" color="inherit">
                 <Badge badgeContent={0} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
+              </Link>
             </Box>
             :
             <Box>
+              <Link to="/cart"   className="cart-icon-btn">
               <IconButton size="large" aria-label="show cart products quantity" color="inherit">
                 <Badge badgeContent={cart.length} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
+                </Link>
             </Box>
             }
             <MenuItem>
@@ -190,11 +200,13 @@ const handleLogout = () => {
             :
           <Box sx={{ flexGrow: 0, display:'flex' }}>
             <Box sx={{mx:2}}>
+              <Link to="/cart"  className="cart-icon-btn">
               <IconButton size="large" aria-label="show cart products quantity" color="inherit">
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={cart.length} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
+              </Link>
             </Box>
             <Tooltip title="Open Profile DropDown">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

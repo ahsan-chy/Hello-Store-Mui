@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, Button, CardActionArea, CardActions, Grid } from '@mui/material';
+import { Box, CardActionArea, CardActions, Grid } from '@mui/material';
 import {products} from "../db/data"
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -58,18 +58,19 @@ useEffect(()=>{
             <Grid item  lg={3} md={4} sm={6} xs={12} key={p.id}>
                   <Card sx={{ height:"400px" }} align="center">
                   <CardActionArea>
-                      <div style={{width:'210px', height:'100%'}}>
-                          <CardMedia
-                          sx={{
-                          width: "100%",
-                          height: 'auto'
-                          }}
-                          component="img"
-                          image={STRAPI_MEDIA_URL+p.attributes.image.data[0].attributes.url}
-                          alt="green iguana"
-                          />
-                      </div>
-  
+                  <Link to ={`/store/${p.id}`}>
+                        <div style={{width:'210px', height:'100%'}}>
+                            <CardMedia
+                            sx={{
+                            width: "100%",
+                            height: 'auto'
+                            }}
+                            component="img"
+                            image={STRAPI_MEDIA_URL+p.attributes.image.data[0].attributes.url}
+                            alt="green iguana"
+                            />
+                        </div>
+                      </Link>  
                       <CardContent>
                       <Typography gutterBottom variant="h6" component="div">
                           {/* {p.title.split(/\s+/).slice(0, 4).join(" ")} */}
@@ -90,18 +91,19 @@ useEffect(()=>{
           <Grid item  lg={3} md={4} sm={6} xs={12} key={p.id}>
                 <Card sx={{ height:"400px" }} align="center">
                 <CardActionArea>
-                    <div style={{width:'210px', height:'100%'}}>
-                        <CardMedia
-                        sx={{
-                        width: "100%",
-                        height: 'auto'
-                        }}
-                        component="img"
-                        image={STRAPI_MEDIA_URL+p.attributes.image.data[0].attributes.url}
-                        alt="green iguana"
-                        />
-                    </div>
-
+                <Link to ={`/store/${p.id}`}>
+                        <div style={{width:'210px', height:'100%'}}>
+                            <CardMedia
+                            sx={{
+                            width: "100%",
+                            height: 'auto'
+                            }}
+                            component="img"
+                            image={STRAPI_MEDIA_URL+p.attributes.image.data[0].attributes.url}
+                            alt="green iguana"
+                            />
+                        </div>
+                    </Link>
                     <CardContent>
                     <Typography gutterBottom variant="h6" component="div">
                         {/* {p.title.split(/\s+/).slice(0, 4).join(" ")} */}
