@@ -26,7 +26,7 @@ const Product = () => {
     const [singleProduct, setSingleProduct] = useState("")
     // const [err, setErr] = useState(null);
     const dispatch = useDispatch();
-    const {id, title} = useParams();
+    const {id} = useParams();
 
     let { cart } = useSelector((state) => ({ ...state }));
     console.log("cart", cart)

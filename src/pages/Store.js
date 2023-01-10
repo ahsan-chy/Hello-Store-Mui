@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import ProductCards from '../components/ProductCards'
 import ProductFilterSidebar from '../components/ProductFilterSidebar'
-import { Box, Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useEffect } from 'react';
 import Breadcrumb from '../components/Breadcrumb';

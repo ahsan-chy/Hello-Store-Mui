@@ -1,11 +1,10 @@
-export const signin = (username, email, confirmed, token) => {
+export const signin = (username, email, token) => {
     return{
         type: "SIGNIN",
         payload: {
             username: username,
             email: email,
             token: token,
-            // confirmed: confirmed
           }
     }
 }

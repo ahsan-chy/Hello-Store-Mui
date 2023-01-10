@@ -1,21 +1,18 @@
 import * as React from 'react';
 import { Container, Typography } from '@mui/material';
-import Button from '../components/Button';
+import Button from '../Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import IconButton from '@mui/material/IconButton';
 import ForwardIcon from '@mui/icons-material/Forward';
-import "../assets/css/orderDetails.css"
-import Breadcrumb from '../components/Breadcrumb';
+import "../../assets/css/orderDetails.css"
 
 const OrderDetails = () => {
   return (
     <>
-    <Breadcrumb pagetitle={"Order Details"}/>
-     <Box sx={{mx:5, my:4}}>
-        <Container>
-            <Typography variant='h4' sx={{color:"#001e3c", textAlign:"left"}}>Order Details 🛒</Typography>
-            <Box sx={{ flexGrow: 1, mt:2 }}>
+     <Box>
+        <Typography variant='h5' sx={{color:"#001e3c", textAlign:"left"}}>Order Details 🛒</Typography>
+            <Box sx={{ flexGrow: 1, mt:3 }}>
                 {/* Table Head */}
                 <Grid container sx={{mb:2}}>
                     <Grid lg={2} md={2} sx={{p:1}}>
@@ -97,10 +94,7 @@ const OrderDetails = () => {
                     </IconButton>
                     </Grid>
                 </Grid>
-                
-                
-                </Box>
-        </Container>
+       </Box>
     </Box>            
     </>
   )

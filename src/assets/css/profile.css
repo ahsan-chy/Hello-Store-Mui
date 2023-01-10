@@ -1,0 +1,11 @@
+.dashboard-link {
+    text-decoration:'none';
+    color: #6d7073 !important;
+}
+
+.dashboard-link.active {
+    color: #001e3c !important;
+}
+.dashboard-link:focus, .dashboard-link:hover {
+    color: #001e3c !important;
+}

@@ -10,7 +10,9 @@ import Product from "../pages/Product";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import OrderConfirm from "../pages/OrderConfirm";
-import OrderDetails from "../pages/OrderDetails";
+import OrderDetails from "../components/profile/OrderDetails";
+import Dashboard from "../components/profile/Dashboard";
+import ProfileUpdate from "../components/profile/ProfileUpdate";
 
 const Routers = () => {
   
@@ -25,10 +27,14 @@ const Routers = () => {
           <Route path="/checkout" element={<Checkout />}/>
           <Route path="/register" element={<SignUp />}/>
           <Route path="/login" element={<SignIn />}/>
-          <Route path="/profile" element={<Profile />}/>
           <Route path="/cart" element={<Cart />}/>
-          <Route path="/orderdetails" element={<OrderDetails />}/>
           
+          <Route path="/profile/" element={<Profile />}>
+            <Route path="dashboard" element={<Dashboard />}/>
+            <Route path="orderdetails" element={<OrderDetails />}/>
+            <Route path="updateprofile" element={<ProfileUpdate />}/>
+          </Route>
+
           <Route path="*" element={<p>There's nothing here: 404!</p>} />
       </Routes>
       <ToastContainer />

@@ -233,8 +233,9 @@ const handleLogout = () => {
               
                 <MenuItem onClick={handleCloseUserMenu} >
                   <Typography textAlign="center" >
-                    <Link to="/profile">Profile</Link>
-                    </Typography>
+                    <Link to="/profile/orderdetails">Profile</Link>
+                  </Typography>
+
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu} >
                   <Typography textAlign="center" onClick={handleLogout}>LogOut</Typography>
