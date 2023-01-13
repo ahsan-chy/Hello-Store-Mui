@@ -22,6 +22,20 @@ import '../assets/css/checkout.css'
 import Breadcrumb from '../components/Breadcrumb';
 import axios from 'axios';
 import { useState } from 'react';
+import { ACCESS_TOKEN } from '../constants/strapi';
+
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+var hr = today.getHours()
+var min = today.getMinutes()
+var sec = today.getSeconds()
+// today = yyyy + '-' + mm + '-' + dd +"T"+ hr +  ":" + min + ":" + sec;
+today = `${yyyy}-${mm}-${dd}T${hr}:${min}:${sec}`;
+
+// console.log(today);
+
 
 const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
     ({ theme, checked }) => ({
@@ -56,11 +70,46 @@ const Checkout = () => {
     const navigate = useNavigate()
 
 
-    let {cart, totalAmountR}  = useSelector((state) => ({ ...state }));
-    // console.log(cart, totalAmountR);
+    let {cart, user, totalAmountR}  = useSelector((state) => ({ ...state }));
+    // console.log("cart", cart);
+    // console.log("user",user);
+    // console.log("totalAmountR",totalAmountR);
+
 
     const cartData = Object.keys(cart).map(key => cart[key])
-
+    // console.log("Cart Data", cartData[0].productId)
+    // console.log("Cart Quantity", cartData[0].quantity)
+    // console.log("Cart SubTotal", cartData[0].subTotal)
+    // console.log("Cart categoryId", cartData[0].categoryId)
+const cartObject = {"data":{
+    "Customer":{
+        "id":user.userData.id
+    } ,
+    "productDetails": [
+    {
+        "productDet": {"id": cartData[0].productId},
+        "quantity": cartData[0].quantity,
+        "subTotal": cartData[0].subTotal,
+        "categoryDet": { "id":cartData[0].categoryId}
+    },
+    {
+        "productDet": {"id": cartData[1].productId},
+        "quantity": cartData[1].quantity,
+        "subTotal": cartData[1].subTotal,
+        "categoryDet": { "id":cartData[1].categoryId}
+    },
+    
+    ],
+    "shippingDetails": {
+            fullName: fullName,
+            email: email,
+            phone: phone,
+            deliveryAddress: deliveryAddress,
+            additionalNote: additionalNote
+    },
+    "totalAmount":totalAmountR,
+    "date": today
+}}
 const confirmOrder = (e) => {
     toast.success('Order Placed Successfully', {
         position: "top-right",
@@ -73,17 +122,14 @@ const confirmOrder = (e) => {
         });
     e.preventDefault()
     try{
-        axios.post('http://localhost:1337/api/shippings/', {
-          "data": {
-            fullName: fullName,
-            email: email,
-            phone: phone,
-            deliveryAddress: deliveryAddress,
-            additionalNote: additionalNote
-        }
-        }).then(response => {
-        
-        })
+        axios.post('http://localhost:1337/api/orders', 
+        cartObject,
+            {
+            headers: {
+                Authorization: `Bearer ${ACCESS_TOKEN}`
+            } }
+            
+       )
     }
     catch(error){
         console.log("Error")
