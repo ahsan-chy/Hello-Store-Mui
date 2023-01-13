@@ -6,7 +6,7 @@ const userReducer = (state = initialState, action) => {
         case "SIGNIN": 
             return {
                 ...state,
-                state: action.payload,
+                userData: action.payload,
               }
         case "SIGNUP": 
             return  action.payload

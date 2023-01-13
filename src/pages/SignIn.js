@@ -32,15 +32,15 @@ const loginUser = async(e) => {
                 identifier: email,
                 password: password
             }).then(response => {
-                const { jwt, user } = response.data;
+                const { jwt, user, id } = response.data;
                 localStorage.setItem('jwt', jwt)
                 // localStorage.setItem('userData', JSON.stringify(user))
                 console.log(user)
                 // alert("Login Successfully")
                 console.log("Login Successfully")
-                if (user || jwt) {
+                if (user || jwt || id) {
                     const token = jwt
-                    dispatch(signin(user.username, user.email, token))
+                    dispatch(signin(user.username, user.email, token, user.id))
                     toast.success('SignIn Successfully', {
                         position: "top-right",
                         autoClose: 2000,
@@ -51,7 +51,7 @@ const loginUser = async(e) => {
                         progress: undefined,
                         theme: "light",
                         });
-                    navigate("/profile")
+                    navigate("/profile/dashboard")
             }})
             .catch(error => {
                 console.log("Error is Error",error.message)

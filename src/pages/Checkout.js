@@ -20,6 +20,8 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import '../assets/css/checkout.css'
 import Breadcrumb from '../components/Breadcrumb';
+import axios from 'axios';
+import { useState } from 'react';
 
 const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
     ({ theme, checked }) => ({
@@ -46,7 +48,14 @@ const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />
   };
   
 const Checkout = () => {
+    const [fullName, setFullName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [deliveryAddress, setDeliveryAddress] = useState("")
+    const [additionalNote, setAdditionalNote] = useState("")
     const navigate = useNavigate()
+
+
     let {cart, totalAmountR}  = useSelector((state) => ({ ...state }));
     // console.log(cart, totalAmountR);
 
@@ -63,6 +72,22 @@ const confirmOrder = (e) => {
         theme: "dark",
         });
     e.preventDefault()
+    try{
+        axios.post('http://localhost:1337/api/shippings/', {
+          "data": {
+            fullName: fullName,
+            email: email,
+            phone: phone,
+            deliveryAddress: deliveryAddress,
+            additionalNote: additionalNote
+        }
+        }).then(response => {
+        
+        })
+    }
+    catch(error){
+        console.log("Error")
+    }
     console.log("Order Confirmed")
     navigate("/orderconfirm")
 }
@@ -83,12 +108,35 @@ return (
                 >
             <Typography variant='h6' sx={{color:"#001e3c", textAlign:"center"}}>Shipping Details</Typography>
                 <form onSubmit={confirmOrder}>
-                    <TextField type="text" fullWidth label="Full Name"  size="small" variant="standard"  sx={{my:1}}/>
-                    <TextField fullWidth type="text" label="Email"  size="small" variant="standard"  sx={{my:1}}/>
-                    <TextField fullWidth type="text" label="Phone"  size="small" variant="standard"  sx={{my:1}}/>
-                    <TextField fullWidth type="text" label="Delivery Address"  size="small" variant="standard"  sx={{my:1}}/>
+                    <TextField type="text" fullWidth 
+                    name="fullName"
+                    value={fullName}
+                    onChange={e => setFullName(e.target.value)}
+                    label="Full Name"  size="small" variant="standard"  sx={{my:1}}/>
+                    
+                    <TextField fullWidth type="text" 
+                    name="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    label="Email"  size="small" variant="standard"  sx={{my:1}}/>
+                    
+                    <TextField fullWidth type="text" 
+                    name="phone"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)}
+                    label="Phone"  size="small" variant="standard"  sx={{my:1}}/>
+
+                    <TextField fullWidth type="text" 
+                    name="deliveryAddress"
+                    value={deliveryAddress}
+                    onChange={e => setDeliveryAddress(e.target.value)}
+                     label="Delivery Address"  size="small" variant="standard"  sx={{my:1}}/>
+
                     <TextField
                         variant="standard"
+                        name="additionalNote"
+                        value={additionalNote}
+                        onChange={e => setAdditionalNote(e.target.value)}
                         label="Additional Note"
                         fullWidth
                         multiline

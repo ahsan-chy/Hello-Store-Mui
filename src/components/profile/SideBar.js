@@ -10,31 +10,38 @@ import Divider from '@mui/material/Divider';
 import GridViewIcon from '@mui/icons-material/GridView';
 import HttpsIcon from '@mui/icons-material/Https';
 import RememberMeIcon from '@mui/icons-material/RememberMe';
-import PersonPinIcon from '@mui/icons-material/PersonPin';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { NavLink } from 'react-router-dom';
 import "../../assets/css/profile.css"
 import { Typography } from '@mui/material';
+import { STRAPI_MEDIA_URL } from '../../constants/strapi';
 
-const SideBar = ({user}) => {
+const SideBar = ({user, loginUser}) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
-
     const handleListItemClick = (event, index) => {
       setSelectedIndex(index);
     };
+const DummyImg = "https://cdn-icons-png.flaticon.com/512/747/747545.png"
   return (
     <>
       <Box sx={{ width: '100%', maxWidth: 230, bgcolor: 'background.paper' }}>
-          <Stack>
-          <Avatar
-            alt="Remy Sharp"
-            src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
-            sx={{ width: 66, height: 66 }}
-            style={{marginLeft:'auto', marginRight:'auto', marginBottom:4}}
-          />
-          <Typography variant='h5' sx={{color:"#001e3c", my:3, textAlign:"center", fontSize: 19, textTransform: 'uppercase'}}>
-            {user.state.username}</Typography>
-        </Stack>
+            {!loginUser ? console.log("User is not Available")
+            :
+            <Stack>
+                {console.log("loginUser", loginUser.data[0].image ?? 'https://cdn-icons-png.flaticon.com/512/747/747545.png')}
+                <Avatar
+                alt="Profile-Image"
+                // src={loginUser.data[0].image ?? DummyImg}
+                src={STRAPI_MEDIA_URL+loginUser.data[0].image[0].url}
+                // src={!ProfileImage ? console.log("Image Not Found") : ProfileImage}
+                sx={{ width: 66, height: 66 }}
+                style={{marginLeft:'auto', marginRight:'auto', marginBottom:4}}
+                />
+                <Typography variant='h5' sx={{color:"#001e3c", my:3, textAlign:"center", fontSize: 19, textTransform: 'uppercase'}}>
+                {loginUser.data[0].username}
+                </Typography>
+            </Stack>
+        }
             <List component="nav" >
               <ListItemButton
                 selected={selectedIndex === 0}

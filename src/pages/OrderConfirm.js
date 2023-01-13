@@ -14,7 +14,7 @@ const OrderConfirm = () => {
                     <Typography variant='h4' sx={{color:"#001e3c", textAlign:"center", mt:4, mb:1}}>Order Confirmed</Typography>
                     <Typography variant='subtitle1' sx={{color:"#001e3c", textAlign:"center"}}>Thanks for Your Order</Typography>
                     <div style={{marginTop:15, display:'flex', justifyContent:'center'}}>
-                        <Link to="/orderdetails" type='submit' className='proceed-btn'>Go to Orders</Link>    
+                        <Link to="/profile/orderdetails" type='submit' className='proceed-btn'>Go to Orders</Link>    
                     </div> 
                 </Grid> 
         </Container>

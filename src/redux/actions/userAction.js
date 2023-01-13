@@ -1,7 +1,8 @@
-export const signin = (username, email, token) => {
+export const signin = (username, email, token, id) => {
     return{
         type: "SIGNIN",
         payload: {
+            id: id,
             username: username,
             email: email,
             token: token,

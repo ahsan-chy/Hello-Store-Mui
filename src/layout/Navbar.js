@@ -210,7 +210,7 @@ const handleLogout = () => {
             </Box>
             <Tooltip title="Open Profile DropDown">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" />
+                <Avatar alt="Remy Sharp" src="https://cdn-icons-png.flaticon.com/512/747/747545.png" />
               </IconButton>
               
             </Tooltip>

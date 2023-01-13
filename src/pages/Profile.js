@@ -13,18 +13,17 @@ const Profile = () => {
   const [loginUser, setLoginUser] = useState("")
 
   let { user } = useSelector((state) => ({ ...state }));
-  const usertokken = user.state.token;
-  console.log(usertokken)
+  const userid = user.userData.id;
+  console.log(userid)
   const getSingleUser = async() => {
     try {
-        let result = await axios.get(`${STRAPI_API_URL}/users?populate=*`, {
+        let result = await axios.get(`${STRAPI_API_URL}/users?filters[id][$eq]=${userid}&populate=*`, {
                 headers: {
-                    'Authorization': `Bearer ${usertokken}`
+                    'Authorization': `Bearer ${ACCESS_TOKEN}`
                 }
                 })
-                setLoginUser("Result",result)
-                setLoginUser("result.data",result.data)
-                console.log(loginUser)
+                setLoginUser(result)
+                // console.log(result.data[0])
     } catch (error) {
         console.log(error.message);
 } }
@@ -38,10 +37,10 @@ useEffect(()=>{
       <Breadcrumb pagetitle={"Profile"}/>
       <Grid container spacing={2} px={3} my={2} mb={6}>
         <Grid item lg={3} md={3} sm={12} xs={12}>
-          <SideBar user={user}/>
+          <SideBar user={user} loginUser={loginUser}/>
         </Grid>
         <Grid item lg={9} md={9} sm={12} xs={12}>
-          <Outlet/>
+          <Outlet loginUser={loginUser}/>
           
         </Grid>
     </Grid>
