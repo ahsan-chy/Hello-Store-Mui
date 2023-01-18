@@ -27,9 +27,12 @@ const Profile = () => {
     } catch (error) {
         console.log(error.message);
 } }
+
+
 useEffect(()=>{
   getSingleUser()
-  console.log(loginUser)
+  console.log(loginUser.id)
+
 },[])
 
   return (
@@ -40,7 +43,7 @@ useEffect(()=>{
           <SideBar user={user} loginUser={loginUser}/>
         </Grid>
         <Grid item lg={9} md={9} sm={12} xs={12}>
-          <Outlet loginUser={loginUser}/>
+          <Outlet loginUser={loginUser} userid={userid}/>
           
         </Grid>
     </Grid>

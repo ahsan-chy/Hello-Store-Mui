@@ -29,11 +29,13 @@ const Routers = () => {
           <Route path="/login" element={<SignIn />}/>
           <Route path="/cart" element={<Cart />}/>
           
+          {/* User Dashboard */}
           <Route path="/profile/" element={<Profile />}>
             <Route path="dashboard" element={<Dashboard />}/>
             <Route path="orderdetails" element={<OrderDetails />}/>
             <Route path="updateprofile" element={<ProfileUpdate />}/>
           </Route>
+
 
           <Route path="*" element={<p>There's nothing here: 404!</p>} />
       </Routes>

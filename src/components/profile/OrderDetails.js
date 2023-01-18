@@ -6,8 +6,34 @@ import Grid from '@mui/material/Unstable_Grid2';
 import IconButton from '@mui/material/IconButton';
 import ForwardIcon from '@mui/icons-material/Forward';
 import "../../assets/css/orderDetails.css"
+import { useEffect } from 'react';
+import { STRAPI_API_URL, ACCESS_TOKEN  } from '../../constants/strapi';
+import { useState } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-const OrderDetails = () => {
+const OrderDetails = () => {  
+  const [order, setOrder] = useState([])
+  let { user } = useSelector((state) => ({ ...state }));
+  const userid = user.userData.id;
+//   console.log(userid)
+
+    const getOrderDetails = async() => {
+        try {
+            let result = await axios.get(`${STRAPI_API_URL}/Orders?filters[Customer][id][$eq]=${userid}&populate=*`, {
+                    headers: {
+                        'Authorization': `Bearer ${ACCESS_TOKEN}`
+                    }
+                    })
+                    setOrder(result.data.data)
+        } catch (error) {
+            console.log(error.message);
+    } }
+    
+useEffect(()=>{
+    getOrderDetails()
+  console.log("order", order)
+},[])
   return (
     <>
      <Box>
@@ -37,18 +63,20 @@ const OrderDetails = () => {
                     </Grid>
                 </Grid>
                 {/* Table Data */}
-                <Grid container sx={{boxShadow:1, borderRadius:2, my:2}} className="row-card">
+                {order && order.map((o, i)=> (
+                <Grid container sx={{boxShadow:1, borderRadius:2, my:2}} className="row-card" key={i}>
                     <Grid lg={2} md={2} sx={{p:1}}>
-                    1234
+                    {o.id}
                     </Grid>
                     <Grid lg={3} md={3} sx={{p:1}}>
-                    <Button variant="contained" color="success" sx={{borderRadius:5}} label={"Pending"} />
+                    {/* <Button variant="contained" color="success" sx={{borderRadius:5}} label={o.attributes.orderStatus} /> */}
+                    <Button variant="contained" color={o.attributes.orderStatus === "pending" ? "primary" : o.attributes.orderStatus === "accepted" ? "success": o.attributes.orderStatus === "completed" ? "success" :o.attributes.orderStatus === "cancelled" ? "error" : "secondary" } sx={{borderRadius:5}} label={o.attributes.orderStatus} />
                     </Grid>
                     <Grid lg={3} md={3} sx={{p:1}}>
-                    Jan 05, 2023
+                    {o.attributes.date.slice(0,10).split('-').reverse().join('-')}
                     </Grid>
                     <Grid lg={3} md={3} sx={{p:1}}>
-                    200$
+                    {o.attributes.totalAmount} $
                     </Grid>
                     <Grid lg={1} md={1} sx={{p:1}}>
                     <IconButton aria-label="delete" size="large" color="success">
@@ -56,7 +84,9 @@ const OrderDetails = () => {
                     </IconButton>
                     </Grid>
                 </Grid>
-                <Grid container sx={{boxShadow:1, borderRadius:2, my:2}} className="row-card">
+                ))
+                }
+                {/* <Grid container sx={{boxShadow:1, borderRadius:2, my:2}} className="row-card">
                     <Grid lg={2} md={2} sx={{p:1}}>
                     1234
                     </Grid>
@@ -93,7 +123,7 @@ const OrderDetails = () => {
                         <ForwardIcon />
                     </IconButton>
                     </Grid>
-                </Grid>
+                </Grid> */}
        </Box>
     </Box>            
     </>

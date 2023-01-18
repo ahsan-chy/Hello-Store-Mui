@@ -23,16 +23,9 @@ import Breadcrumb from '../components/Breadcrumb';
 import axios from 'axios';
 import { useState } from 'react';
 import { ACCESS_TOKEN } from '../constants/strapi';
+import { useLayoutEffect } from 'react';
 
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
-var hr = today.getHours()
-var min = today.getMinutes()
-var sec = today.getSeconds()
-// today = yyyy + '-' + mm + '-' + dd +"T"+ hr +  ":" + min + ":" + sec;
-today = `${yyyy}-${mm}-${dd}T${hr}:${min}:${sec}`;
+
 
 // console.log(today);
 
@@ -69,37 +62,65 @@ const Checkout = () => {
     const [additionalNote, setAdditionalNote] = useState("")
     const navigate = useNavigate()
 
+    let today = new Date();
+    const calculateCurrentDate = () => {
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        let hr = today.getHours()
+        let min = today.getMinutes()
+        let sec = today.getSeconds()
+        // today = yyyy + '-' + mm + '-' + dd +"T"+ hr +  ":" + min + ":" + sec;
+        today = `${yyyy}-${mm}-${dd}T${hr}:${min}:${sec}`;
+    }
 
     let {cart, user, totalAmountR}  = useSelector((state) => ({ ...state }));
     // console.log("cart", cart);
     // console.log("user",user);
     // console.log("totalAmountR",totalAmountR);
-
+useLayoutEffect(()=>{
+    calculateCurrentDate()
+},[])
 
     const cartData = Object.keys(cart).map(key => cart[key])
-    // console.log("Cart Data", cartData[0].productId)
-    // console.log("Cart Quantity", cartData[0].quantity)
-    // console.log("Cart SubTotal", cartData[0].subTotal)
-    // console.log("Cart categoryId", cartData[0].categoryId)
+    let arr = []
+    cartData.map((element) => {
+        let obj = Object.assign({"quantity":element.quantity, "subTotal":element.subTotal, "categoryDet":{"id": element.categoryId}, "product_det":{"id":element.productId} });
+        arr = [...arr, obj]
+    });
+console.log()
 const cartObject = {"data":{
     "Customer":{
         "id":user.userData.id
     } ,
-    "productDetails": [
-    {
-        "productDet": {"id": cartData[0].productId},
-        "quantity": cartData[0].quantity,
-        "subTotal": cartData[0].subTotal,
-        "categoryDet": { "id":cartData[0].categoryId}
-    },
-    {
-        "productDet": {"id": cartData[1].productId},
-        "quantity": cartData[1].quantity,
-        "subTotal": cartData[1].subTotal,
-        "categoryDet": { "id":cartData[1].categoryId}
-    },
-    
-    ],
+    "productDetails": arr
+    // [
+    // {
+    //     "productDet": {"id": cartData[0].productId},
+    //     "quantity": cartData[0].quantity,
+    //     "subTotal": cartData[0].subTotal,
+    //     "categoryDet": { "id":cartData[0].categoryId}
+    // },
+    // {
+    //     "productDet": {"id": cartData[1].productId},
+    //     "quantity": cartData[1].quantity,
+    //     "subTotal": cartData[1].subTotal,
+    //     "categoryDet": { "id":cartData[1].categoryId}
+    // },
+    // {
+    //     "productDet": {"id": cartData[2].productId},
+    //     "quantity": cartData[2].quantity,
+    //     "subTotal": cartData[2].subTotal,
+    //     "categoryDet": { "id":cartData[2].categoryId}
+    // },
+    // {
+    //     "productDet": {"id": cartData[3].productId},
+    //     "quantity": cartData[3].quantity,
+    //     "subTotal": cartData[3].subTotal,
+    //     "categoryDet": { "id":cartData[3].categoryId}
+    // }    
+    // ]
+    ,
     "shippingDetails": {
             fullName: fullName,
             email: email,
@@ -111,15 +132,7 @@ const cartObject = {"data":{
     "date": today
 }}
 const confirmOrder = (e) => {
-    toast.success('Order Placed Successfully', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-        });
+    
     e.preventDefault()
     try{
         axios.post('http://localhost:1337/api/orders', 
@@ -129,13 +142,49 @@ const confirmOrder = (e) => {
                 Authorization: `Bearer ${ACCESS_TOKEN}`
             } }
             
-       )
+       ).then((res)=>{
+        console.log("Order Confirmed")
+        navigate("/orderconfirm")   
+        
+        toast.success('Order Placed Successfully', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
+            });
+
+       })
+       .catch(error => {
+        console.log("Error in Data Upload",error.message)
+        toast.error('Faild to confirm order', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+    })
     }
     catch(error){
         console.log("Error")
+        toast.error('Order Sending Failed', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
     }
-    console.log("Order Confirmed")
-    navigate("/orderconfirm")
+    
 }
 return (
     <>

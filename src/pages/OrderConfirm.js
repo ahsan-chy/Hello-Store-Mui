@@ -5,14 +5,6 @@ import { Link } from 'react-router-dom';
 import "../assets/css/orderconfirm.css"
 
 const OrderConfirm = () => {
-//   var today = new Date();
-//   var dd = String(today.getDate()).padStart(2, '0');
-// var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-// var yyyy = today.getFullYear();
-// var hr = today.getHours()
-// var min = today.getMinutes()
-//   console.log(hr, min);
-
 
   return (
     <Grid sx={{ my:10}}>

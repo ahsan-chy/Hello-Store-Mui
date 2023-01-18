@@ -10,6 +10,7 @@ import axios from 'axios';
 import { STRAPI_API_URL, STRAPI_MEDIA_URL, ACCESS_TOKEN, STRAPI_PRODUCTS_API_URL } from '../constants/strapi';
 import { Link } from 'react-router-dom';
 import "../assets/css/cardbtn.css"
+import { useLayoutEffect } from 'react';
 
 const ProductCards = ({cat}) => {
     const [products, setProducts] = useState([])
@@ -28,7 +29,7 @@ const ProductCards = ({cat}) => {
         } catch (error) {
             setErr(error.message);
     } }
-    getAllProducts()
+ 
 
     const getProducts = async(cat, cat1, cat2, cat3) => {
         try {
@@ -42,6 +43,9 @@ const ProductCards = ({cat}) => {
         } catch (error) {
             setErr(error.message);
     } }
+useLayoutEffect(()=>{
+    getAllProducts()
+},[])
 useEffect(()=>{
     getProducts(cat[0],cat[1],cat[2],cat[3])
     // console.log(products)

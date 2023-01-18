@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system'
-import Button from '@mui/material/Button';
+import Button from '../components/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,17 +16,37 @@ import { removeFromCart, totalAmount, updateQuantity } from '../redux/actions/pr
 import Link  from '../components/Link';
 import "../assets/css/cart.css"
 import Breadcrumb from '../components/Breadcrumb';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const Cart = ({ label, icon, to, type, onClick, sx, style,className }) => {
     let [cartData, setCartData] = useState([])
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
-    let {cart, totalAmountR}  = useSelector((state) => ({ ...state }));
+    let {user, cart, totalAmountR}  = useSelector((state) => ({ ...state }));
     // console.log("cart", cart)
 
     cartData = Object.keys(cart).map(key => cart[key])
 
+    let processToCheckout = () => {
+        if (user !== null) {
+            navigate("/checkout")
+        }
+        else{
+            toast.error('Login First Please', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
+        }
+    }
 
 useEffect(()=>{
     let result = cart.map(item => item.subTotal).reduce((prev, next) => {return prev + next}, 0);
@@ -122,8 +142,12 @@ return (
                 </Table>
                 </TableContainer> 
                 <div style={{marginTop:25, display:'flex', justifyContent:'end'}}>
-                    {/* <Link to="/checkout" type='submit' className='proceed-btn'>Proceed To Checkout</Link>   */}
-                    <Link label={'Process To Checkout'} to="/checkout" type={'submit'} className='proceed-btn' />  
+                    <Button 
+                        variant="contained" 
+                        className="proceed-btn"
+                        label={"Process To Checkout"}
+                        onClick={processToCheckout}
+                        />
                 </div>
                 </Box>
             </Grid>
