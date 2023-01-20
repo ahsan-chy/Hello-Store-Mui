@@ -13,7 +13,12 @@ const userReducer = (state = initialState, action) => {
 
         case "SIGNOUT": 
             return  action.payload
-
+        
+        case "UPDATEPROFILE": 
+                return {
+                    ...state,
+                    userData: action.payload,
+                }   
         default:
             return state
     }

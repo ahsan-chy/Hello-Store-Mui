@@ -27,8 +27,6 @@ const Profile = () => {
     } catch (error) {
         console.log(error.message);
 } }
-
-
 useEffect(()=>{
   getSingleUser()
   console.log(loginUser.id)

@@ -22,6 +22,7 @@ const SideBar = ({user, loginUser}) => {
       setSelectedIndex(index);
     };
 const DummyImg = "https://cdn-icons-png.flaticon.com/512/747/747545.png"
+
   return (
     <>
       <Box sx={{ width: '100%', maxWidth: 230, bgcolor: 'background.paper' }}>
@@ -32,13 +33,14 @@ const DummyImg = "https://cdn-icons-png.flaticon.com/512/747/747545.png"
                 <Avatar
                 alt="Profile-Image"
                 // src={loginUser.data[0].image ?? DummyImg}
-                src={STRAPI_MEDIA_URL+loginUser.data[0].image[0].url}
+                src={STRAPI_MEDIA_URL+loginUser.data[0].image.url}
                 // src={!ProfileImage ? console.log("Image Not Found") : ProfileImage}
                 sx={{ width: 66, height: 66 }}
                 style={{marginLeft:'auto', marginRight:'auto', marginBottom:4}}
                 />
                 <Typography variant='h5' sx={{color:"#001e3c", my:3, textAlign:"center", fontSize: 19, textTransform: 'uppercase'}}>
-                {loginUser.data[0].username}
+                {/* {loginUser.data[0].username} */}
+                {user.userData.username}
                 </Typography>
             </Stack>
         }

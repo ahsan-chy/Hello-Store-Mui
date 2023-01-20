@@ -26,3 +26,15 @@ export const signOut = () => {
         payload: null
     }
 }
+
+export const updateProfile = (id, username, email, token) => {
+    return{
+        type: "UPDATEPROFILE",
+        payload: {
+            id: id,
+            username: username,
+            email: email,
+            token: token,
+          }
+    }
+}
