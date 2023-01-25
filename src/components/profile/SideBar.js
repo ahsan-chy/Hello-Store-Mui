@@ -29,11 +29,11 @@ const DummyImg = "https://cdn-icons-png.flaticon.com/512/747/747545.png"
             {!loginUser ? console.log("User is not Available")
             :
             <Stack>
-                {console.log("loginUser", loginUser.data[0].image ?? 'https://cdn-icons-png.flaticon.com/512/747/747545.png')}
+                {console.log("loginUser", loginUser?.data?.[0]?.image ?? 'https://cdn-icons-png.flaticon.com/512/747/747545.png')}
                 <Avatar
                 alt="Profile-Image"
                 // src={loginUser.data[0].image ?? DummyImg}
-                src={STRAPI_MEDIA_URL+loginUser.data[0].image.url}
+                src={STRAPI_MEDIA_URL+loginUser?.data?.[0]?.image?.url ?? 'https://cdn-icons-png.flaticon.com/512/747/747545.png'}
                 // src={!ProfileImage ? console.log("Image Not Found") : ProfileImage}
                 sx={{ width: 66, height: 66 }}
                 style={{marginLeft:'auto', marginRight:'auto', marginBottom:4}}
