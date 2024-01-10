@@ -1,4 +1,4 @@
-# React JS Medium Level Folder Structure
+# Hello Store
 
 In the project directory, you can run:
 ### `npm start`
